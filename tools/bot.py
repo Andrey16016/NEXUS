@@ -10,6 +10,10 @@ colorama.init()
 print (Fore.YELLOW + "")
 
 
+print ("ОБЩАЙСЯ С ЮЗЕРАМИ ТГ ПРЯМО ИЗ КОНСОЛИ")
+print ("Главное чтобы они нажали /start в боте")
+print ("")
+
 #script
 
 def bot():

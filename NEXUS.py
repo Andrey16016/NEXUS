@@ -81,7 +81,7 @@ user = input("[+] Выбирай действие>")
 
 
 info = f"""
-Developer: @h1user
+Developer: RESHETKA
 
 Version: {vers}
 

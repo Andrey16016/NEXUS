@@ -7,9 +7,17 @@ from colorama import Fore
 import os
 
 
+os.system("clear")
+
+
 colorama.init()
 
 print (Fore.YELLOW + "")
+
+
+print ("Глушит интернет, используёте на свой страх и риск")
+
+print ("")
 
 wificraker = input("Нажмите Enter чтобы глушить wifi")
 print ("Глушим wifi")

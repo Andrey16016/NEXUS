@@ -9,6 +9,9 @@ os.system("clear")
 #hello world
 colorama.init()
 
+print ("ГЕНЕРИРУЙ НОМЕРА")
+print ("")
+
 
 print (Fore.GREEN + "")
 
@@ -18,8 +21,9 @@ def gen():
     print ("Номера...")
     for h in range(int(kol)):
         phone = random.randint(79000000000, 79999999999)
-        print (Fore.YELLOW + phone)
-    p = input("Нажми enter")
+        print (phone)
+ #       print (Fore.YELLOW + "")
+   # p = input("Нажми enter")
 
 gen()
 

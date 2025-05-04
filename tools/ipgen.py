@@ -6,6 +6,10 @@ from colorama import Fore
 
 colorama.init()
 
+os.system("clear")
+
+print ("Генерируй Ip")
+print ("")
 
 print (Fore.YELLOW + "")
 #script
