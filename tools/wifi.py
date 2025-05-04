@@ -95,15 +95,13 @@ def main():
         thread.join()
 
     print("Отправка пакетов завершена.")
+    print ("Закрываю программу")
+    exit()
 
 if __name__ == "__main__":
     main()
 #the end
 
-print ("")
-i = input("Нажмите Enter")
-#f = open("bs.txt",  "r")
-os.system("clear")
-os.system("python3 NEXUS.py")
+
 
     
